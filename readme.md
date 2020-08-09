@@ -1,7 +1,7 @@
 # Личный проект «Типотека» [![Build status][travis-image]][travis-url]
 
 * Студент: [Николай Думчев](https://up.htmlacademy.ru/nodejs/3/user/38064).
-* Наставник: `Неизвестно`.
+* Наставник: [Мендяев Николай](https://htmlacademy.ru/profile/id1339341).
 
 ---
 
