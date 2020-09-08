@@ -48,7 +48,7 @@ const sendResponse = (res, statusCode, message) => {
     <html lang="ru">
     <head>
       <meta charset="UTF-8">
-      <title>Buy and sell</title>
+      <title>Typoteka</title>
     </head>
     <body>${message}</body>
     </html>`
