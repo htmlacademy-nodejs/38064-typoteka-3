@@ -1,7 +1,7 @@
 'use strict';
 
 const chalk = require(`chalk`);
-const fs = require(`fs`);
+const fs = require(`fs`).promises;
 const {ExitCode} = require(`../utils/const`);
 const {
   getRandomInt,
@@ -118,7 +118,7 @@ const generatePosts = (count = DEFAULT_COUNT) => {
 /**
  * @param {string[]} args
  */
-const run = (args) => {
+const run = async (args) => {
   const [count] = args;
   const countPost = Number.isInteger(+count) && (+count > 0) ? +count : DEFAULT_COUNT;
 
@@ -129,15 +129,14 @@ const run = (args) => {
 
   const content = JSON.stringify(generatePosts(countPost));
 
-  fs.writeFile(FILE_NAME, content, `utf-8`, (err) => {
-    if (err) {
-      console.error(chalk.red(`Can't write data to file...`));
-      console.error(err);
-      process.exit(ExitCode.ERROR);
-    }
-
+  try {
+    await fs.writeFile(FILE_NAME, content, `utf-8`);
     console.info(chalk.green(`Operation success. File created.`));
-  });
+  } catch (err) {
+    console.error(chalk.red(`Can't write data to file...`));
+    console.error(err);
+    process.exit(ExitCode.ERROR);
+  }
 };
 
 
@@ -153,5 +152,5 @@ module.exports = {
  * @property {string} announce
  * @property {string} fullText
  * @property {string[]} сategory
- * @property {number} createdDate
+ * @property {string} createdDate
  */
