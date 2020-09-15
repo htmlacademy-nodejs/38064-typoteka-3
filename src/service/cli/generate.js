@@ -2,11 +2,11 @@
 
 const chalk = require(`chalk`);
 const fs = require(`fs`).promises;
-const {ExitCode} = require(`../utils/const`);
+const {ExitCode} = require(`../../utils/const`);
 const {
   getRandomInt,
   shuffleArray,
-} = require(`../utils/common`);
+} = require(`../../utils/common`);
 
 
 const DEFAULT_COUNT = 1;
@@ -14,54 +14,10 @@ const MAX_COUNT = 1000;
 const POST_MONTH_RANGE = 3;
 const FILE_NAME = `mocks.json`;
 
-const Data = {
-  TITLES: [
-    `Ёлки. История деревьев`,
-    `Как перестать беспокоиться и начать жить`,
-    `Как достигнуть успеха не вставая с кресла`,
-    `Обзор новейшего смартфона`,
-    `Лучшие рок-музыканты 20-века`,
-    `Как начать программировать`,
-    `Учим HTML и CSS`,
-    `Что такое золотое сечение`,
-    `Как собрать камни бесконечности`,
-    `Борьба с прокрастинацией`,
-    `Рок — это протест`,
-    `Самый лучший музыкальный альбом этого года`,
-  ],
-  ANNOUNCES: [
-    `Ёлки — это не просто красивое дерево. Это прочная древесина.`,
-    `Первая большая ёлка была установлена только в 1938 году.`,
-    `Вы можете достичь всего. Стоит только немного постараться и запастись книгами.`,
-    `Этот смартфон — настоящая находка. Большой и яркий экран, мощнейший процессор — всё это в небольшом гаджете.`,
-    `Золотое сечение — соотношение двух величин, гармоническая пропорция.`,
-    `Собрать камни бесконечности легко, если вы прирожденный герой.`,
-    `Освоить вёрстку несложно. Возьмите книгу новую книгу и закрепите все упражнения на практике.`,
-    `Бороться с прокрастинацией несложно. Просто действуйте. Маленькими шагами.`,
-    `Программировать не настолько сложно, как об этом говорят.`,
-    `Простые ежедневные упражнения помогут достичь успеха.`,
-    `Это один из лучших рок-музыкантов.`,
-    `Он написал больше 30 хитов.`,
-    `Из под его пера вышло 8 платиновых альбомов.`,
-    `Процессор заслуживает особого внимания. Он обязательно понравится геймерам со стажем.`,
-    `Рок-музыка всегда ассоциировалась с протестами. Так ли это на самом деле?`,
-    `Достичь успеха помогут ежедневные повторения.`,
-    `Помните, небольшое количество ежедневных упражнений лучше, чем один раз, но много.`,
-    `Как начать действовать? Для начала просто соберитесь.`,
-    `Игры и программирование разные вещи. Не стоит идти в программисты, если вам нравится только игры.`,
-    `Альбом стал настоящим открытием года. Мощные гитарные рифы и скоростные соло-партии не дадут заскучать.`,
-  ],
-  CATEGORIES: [
-    `Деревья`,
-    `За жизнь`,
-    `Без рамки`,
-    `Разное`,
-    `IT`,
-    `Музыка`,
-    `Кино`,
-    `Программирование`,
-    `Железо`,
-  ],
+const ContentFile = {
+  TITLES: `./data/titles.txt`,
+  SENTENCES: `./data/sentences.txt`,
+  CATEGORIES: `./data/categories.txt`,
 };
 
 const AnnounceRestrict = {
@@ -97,28 +53,51 @@ const getPostDate = (date) => {
 
 /**
  * @param {number} count
+ * @param {string[]} titles
+ * @param {string[]} sentences
+ * @param {string[]} categories
  * @return {Post[]}
  */
-const generatePosts = (count = DEFAULT_COUNT) => {
+const generatePosts = (count = DEFAULT_COUNT, titles, sentences, categories) => {
   return Array(count).fill(null).map(() => {
     const announceSentenceCount = getRandomInt(AnnounceRestrict.MIN, AnnounceRestrict.MAX);
-    const fullTextSentenceCount = getRandomInt(1, Data.ANNOUNCES.length);
-    const categoriesCount = getRandomInt(1, Data.CATEGORIES.length);
+    const fullTextSentenceCount = getRandomInt(1, sentences.length);
+    const categoriesCount = getRandomInt(1, categories.length);
 
     return {
-      title: Data.TITLES[getRandomInt(0, Data.TITLES.length - 1)],
-      announce: shuffleArray(Data.ANNOUNCES).slice(0, announceSentenceCount).join(` `),
-      fullText: shuffleArray(Data.ANNOUNCES).slice(0, fullTextSentenceCount),
-      category: shuffleArray(Data.CATEGORIES).slice(0, categoriesCount),
+      title: titles[getRandomInt(0, titles.length - 1)],
+      announce: shuffleArray(sentences).slice(0, announceSentenceCount).join(` `),
+      fullText: shuffleArray(sentences).slice(0, fullTextSentenceCount),
+      category: shuffleArray(categories).slice(0, categoriesCount),
       createdDate: getPostDate(Date.now()),
     };
   });
 };
 
 /**
+ * @param {string} filePath
+ * @return {Promise<string[]>}
+ */
+const readContent = async (filePath) => {
+  try {
+    const content = await fs.readFile(filePath, `utf-8`);
+    return content.split(`\n`);
+  } catch (err) {
+    console.error(chalk.red(err));
+    return [];
+  }
+};
+
+/**
  * @param {string[]} args
  */
 const run = async (args) => {
+  const [titles, sentences, categories] = await Promise.all([
+    readContent(ContentFile.TITLES),
+    readContent(ContentFile.SENTENCES),
+    readContent(ContentFile.CATEGORIES),
+  ]);
+
   const [count] = args;
   const countPost = Number.isInteger(+count) && (+count > 0) ? +count : DEFAULT_COUNT;
 
@@ -127,7 +106,7 @@ const run = async (args) => {
     process.exit(ExitCode.ERROR);
   }
 
-  const content = JSON.stringify(generatePosts(countPost));
+  const content = JSON.stringify(generatePosts(countPost, titles, sentences, categories));
 
   try {
     await fs.writeFile(FILE_NAME, content, `utf-8`);
