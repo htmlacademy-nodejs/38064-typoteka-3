@@ -1,0 +1,41 @@
+extends ../layouts/layout
+
+block content
+  main
+    section.modal.modal--flex
+      div.popup.popup--new-publication.popup--flex
+        div.new-publication
+          form(action='#' method='POST')
+            div.new-publication__header
+              h1 Новая публикация
+              div.new-publication__date-form
+                h3 Дата публикации
+                div.new-publication__date-form-division
+                  div.new-publication__date-block
+                    label(for='new-publication-date' aria-label='Календарь')
+                    input#new-publication-date(type='text' name='login' placeholder='21.03.2019')
+              button.new-publication__button.button.button--colored(type='submit') Опубликовать
+            button.popup__button.button.button--popup-close(type='button' aria-label='Закрыть окно') Закрыть окно
+
+            div.new-publication__form.form
+              div.form__wrapper.form__wrapper--intro
+                div.form__field
+                  label
+                    input(type='text' placeholder='Заголовок' required)
+                div.form__field.form__field--post-image
+                  label
+                    input#image-name-field(type='text' placeholder='Фотография' readonly)
+                  div.form__image-loader.form__image-loader--publication
+                    label
+                      input.visually-hidden(type='file')
+                      | Обзор
+                a.new-publication__form-link.button.button--transparent(href='#') Добавить категорию
+              div.form__wrapper.form__wrapper--text
+                div.form__field.form__field--publication-text
+                  label
+                    textarea(rows='1' placeholder='Анонс публикации')
+                div.form__field.form__field--publication-text
+                  label
+                    textarea(rows='1' placeholder='Полный текст публикации')
+
+      div.modal__overlay
