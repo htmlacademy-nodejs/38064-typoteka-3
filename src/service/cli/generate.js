@@ -1,8 +1,9 @@
 'use strict';
 
-const chalk = require(`chalk`);
 const fs = require(`fs`).promises;
-const {ExitCode} = require(`../../utils/const`);
+const chalk = require(`chalk`);
+const {nanoid} = require(`nanoid`);
+const {ID_LENGTH, ExitCode} = require(`../../utils/const`);
 const {
   getRandomInt,
   shuffleArray,
@@ -13,11 +14,13 @@ const DEFAULT_COUNT = 1;
 const MAX_COUNT = 1000;
 const POST_MONTH_RANGE = 3;
 const FILE_NAME = `mocks.json`;
+const MAX_COMMENT_COUNT = 5;
 
 const ContentFile = {
   TITLES: `./data/titles.txt`,
   SENTENCES: `./data/sentences.txt`,
   CATEGORIES: `./data/categories.txt`,
+  COMMENTS: `./data/comments.txt`,
 };
 
 const AnnounceRestrict = {
@@ -52,24 +55,39 @@ const getPostDate = (date) => {
 };
 
 /**
+ * @param {string[]} sentences
+ * @return {Comment[]}
+ */
+const generateComments = (sentences) => {
+  const count = getRandomInt(1, MAX_COMMENT_COUNT);
+  return Array(count).fill(null).map(() => ({
+    id: nanoid(ID_LENGTH),
+    text: shuffleArray(sentences.slice()).slice(0, getRandomInt(1, sentences.length)).join(` `),
+  }));
+};
+
+/**
  * @param {number} count
  * @param {string[]} titles
  * @param {string[]} sentences
  * @param {string[]} categories
+ * @param {string[]} comments
  * @return {Post[]}
  */
-const generatePosts = (count = DEFAULT_COUNT, titles, sentences, categories) => {
+const generatePosts = (count = DEFAULT_COUNT, titles, sentences, categories, comments) => {
   return Array(count).fill(null).map(() => {
     const announceSentenceCount = getRandomInt(AnnounceRestrict.MIN, AnnounceRestrict.MAX);
     const fullTextSentenceCount = getRandomInt(1, sentences.length);
     const categoriesCount = getRandomInt(1, categories.length);
 
     return {
+      id: nanoid(ID_LENGTH),
       title: titles[getRandomInt(0, titles.length - 1)],
       announce: shuffleArray(sentences).slice(0, announceSentenceCount).join(` `),
       fullText: shuffleArray(sentences).slice(0, fullTextSentenceCount),
       category: shuffleArray(categories).slice(0, categoriesCount),
       createdDate: getPostDate(Date.now()),
+      comments: generateComments(comments),
     };
   });
 };
@@ -92,10 +110,11 @@ const readContent = async (filePath) => {
  * @param {string[]} args
  */
 const run = async (args) => {
-  const [titles, sentences, categories] = await Promise.all([
+  const [titles, sentences, categories, comments] = await Promise.all([
     readContent(ContentFile.TITLES),
     readContent(ContentFile.SENTENCES),
     readContent(ContentFile.CATEGORIES),
+    readContent(ContentFile.COMMENTS),
   ]);
 
   const [count] = args;
@@ -106,7 +125,7 @@ const run = async (args) => {
     process.exit(ExitCode.ERROR);
   }
 
-  const content = JSON.stringify(generatePosts(countPost, titles, sentences, categories));
+  const content = JSON.stringify(generatePosts(countPost, titles, sentences, categories, comments));
 
   try {
     await fs.writeFile(FILE_NAME, content, `utf-8`);
@@ -126,10 +145,18 @@ module.exports = {
 
 
 /**
+ * @typedef {Object} Comment
+ * @property {string} id
+ * @property {string} text
+ */
+
+/**
  * @typedef {Object} Post
+ * @property {string} id
  * @property {string} title
  * @property {string} announce
  * @property {string} fullText
  * @property {string[]} сategory
  * @property {string} createdDate
+ * @property {Comment[]} comments
  */
