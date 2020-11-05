@@ -5,6 +5,7 @@ const USER_ARGV_INDEX = 2;
 const DEFAULT_COMMAND = `--help`;
 
 const ID_LENGTH = 6;
+const API_PREFIX = `/api`;
 
 const ExitCode = {
   SUCCESS: 0,
@@ -24,6 +25,7 @@ module.exports = {
   USER_ARGV_INDEX,
   DEFAULT_COMMAND,
   ID_LENGTH,
+  API_PREFIX,
   ExitCode,
   HttpCode,
 };
