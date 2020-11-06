@@ -151,6 +151,11 @@ module.exports = {
  */
 
 /**
+ * @typedef {Object} LocalComment
+ * @property {string} text
+ */
+
+/**
  * @typedef {Object} Post
  * @property {string} id
  * @property {string} title
