@@ -4,7 +4,8 @@ const express = require(`express`);
 const getMockData = require(`../lib/get-mock-data`);
 const initArticlesController = require(`./articles`);
 const initCategoriesController = require(`./categories`);
-const {ArticleService, CategoryService, CommentService} = require(`../data-service`);
+const initSearchController = require(`./search`);
+const {ArticleService, CategoryService, CommentService, SearchService} = require(`../data-service`);
 
 
 const controller = new express.Router();
@@ -14,6 +15,7 @@ const controller = new express.Router();
 
   initArticlesController(controller, new ArticleService(mockPosts), new CommentService());
   initCategoriesController(controller, new CategoryService(mockPosts));
+  initSearchController(controller, new SearchService(mockPosts));
 })();
 
 
