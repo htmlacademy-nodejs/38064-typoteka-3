@@ -17,22 +17,19 @@ const initArticlesController = (controller, articleService) => {
 
   articlesController.get(`/`, (req, res) => {
     const articles = articleService.articles;
-
-    return res.status(HttpCode.OK).json(articles);
+    res.status(HttpCode.OK).json(articles);
   });
 
 
   articlesController.get(`/:id`, getArticleExistValidator(articleService), (req, res) => {
     const {article} = res.locals;
-
-    return res.status(HttpCode.OK).json(article);
+    res.status(HttpCode.OK).json(article);
   });
 
 
   articlesController.post(`/`, articleValidator, (req, res) => {
     const article = articleService.create(req.body);
-
-    return res.status(HttpCode.CREATED).json(article);
+    res.status(HttpCode.CREATED).json(article);
   });
 
 
@@ -41,10 +38,10 @@ const initArticlesController = (controller, articleService) => {
     const updatedArticle = articleService.update(id, req.body);
 
     if (!updatedArticle) {
-      return res.status(HttpCode.NOT_FOUND).send(`Not found article with id: ${id}`);
+      res.status(HttpCode.NOT_FOUND).send(`Not found article with id: ${id}`);
     }
 
-    return res.status(HttpCode.OK).json(updatedArticle);
+    res.status(HttpCode.OK).json(updatedArticle);
   });
 
 
@@ -53,10 +50,10 @@ const initArticlesController = (controller, articleService) => {
     const deletedArticle = articleService.delete(id);
 
     if (!deletedArticle) {
-      return res.status(HttpCode.NOT_FOUND).send(`Not found article with id: ${id}`);
+      res.status(HttpCode.NOT_FOUND).send(`Not found article with id: ${id}`);
     }
 
-    return res.status(HttpCode.OK).json(deletedArticle);
+    res.status(HttpCode.OK).json(deletedArticle);
   });
 };
 
