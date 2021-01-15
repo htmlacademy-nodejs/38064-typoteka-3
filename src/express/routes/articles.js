@@ -6,7 +6,11 @@ const api = require(`../api`).getAPI();
 
 const articlesRouter = new Router();
 
-articlesRouter.get(`/add`, (req, res) => res.render(`articles/new-post`));
+articlesRouter.get(`/add`, (req, res) => {
+
+
+  res.render(`articles/new-post`);
+});
 
 
 articlesRouter.get(`/edit/:id`, async (req, res) => {
@@ -14,7 +18,7 @@ articlesRouter.get(`/edit/:id`, async (req, res) => {
 
   try {
     const article = await api.getArticleById(articleId);
-    res.render(`articles/new-post`, {article});
+    res.render(`articles/edit-post`, {article});
 
   } catch (error) {
     // TODO добавить обработку ошибки получения данных о посте

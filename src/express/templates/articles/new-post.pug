@@ -2,10 +2,10 @@ extends ../layouts/layout
 
 block content
   main
-    section.modal.modal--flex
-      div.popup.popup--new-publication.popup--flex
+    section
+      div.popup.popup--new-publication.popup--anti
         div.new-publication
-          form(action='#' method='POST')
+          form(action='/articles/add' method='POST' enctype='multipart/form-data' autocomplete='off')
             div.new-publication__header
               h1 Новая публикация
               div.new-publication__date-form
@@ -13,37 +13,28 @@ block content
                 div.new-publication__date-form-division
                   div.new-publication__date-block
                     label(for='new-publication-date' aria-label='Календарь')
-                    -
-                      const date = new Date(article.createdDate);
-                      const day = date.getDate();
-                      const month = date.getMonth() + 1;
-                      const year = date.getFullYear();
-                    input#new-publication-date(type='text' name='login' placeholder='21.03.2019' value=`${day}.${month}.${year}`)
+                    input#new-publication-date(type='text' name='date' placeholder='2019-03-21')
               button.new-publication__button.button.button--colored(type='submit') Опубликовать
-            button.popup__button.button.button--popup-close(type='button' aria-label='Закрыть окно') Закрыть окно
+            a.popup__button.button.button--popup-close(aria-label='Закрыть окно') Закрыть окно
 
             div.new-publication__form.form
               div.form__wrapper.form__wrapper--intro
                 div.form__field
                   label
-                    input(type='text' placeholder='Заголовок' value=article.title required)
+                    input(type='text' name='title' placeholder='Заголовок' required)
                 div.form__field.form__field--post-image
                   label
-                    // TODO допилить подстановку существующего изображения или найти как обрабатывать, когда изображение уже есть
                     input#image-name-field(type='text' placeholder='Фотография' readonly)
                   div.form__image-loader.form__image-loader--publication
                     label
-                      input.visually-hidden(type='file')
+                      input.visually-hidden(type='file' name='upload')
                       | Обзор
-                // TODO допилить категории публикации
+                // TODO реализовать функционал добавления категорий
                 a.new-publication__form-link.button.button--transparent(href='#') Добавить категорию
               div.form__wrapper.form__wrapper--text
                 div.form__field.form__field--publication-text
-                  // TODO поправить верстку полям, из-за resize: none с ними сложно работать на сайте
                   label
-                    textarea(rows='1' placeholder='Анонс публикации') #{article.announce}
+                    textarea(rows='5' name='announcement' placeholder='Анонс публикации')
                 div.form__field.form__field--publication-text
                   label
-                    textarea(rows='1' placeholder='Полный текст публикации') #{article.fullText}
-
-      div.modal__overlay
+                    textarea(rows='10' name='full-text' placeholder='Полный текст публикации')
