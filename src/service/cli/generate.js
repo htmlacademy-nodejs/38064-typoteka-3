@@ -29,29 +29,15 @@ const AnnounceRestrict = {
 };
 
 /**
- * @param {number} number
- * @return {string}
+ * @return {string} в формате ISO
  */
-const formatToTwoDigits = (number) => {
-  return `${number < 10 ? `0` : ``}${number}`;
-};
-
-/**
- * @param {number} date
- * @return {string}
- */
-const getPostDate = (date) => {
-  const ago = new Date(date);
+const getPostDate = () => {
+  const ago = new Date();
   ago.setMonth(ago.getMonth() - POST_MONTH_RANGE);
-  const randomDate = new Date(getRandomInt(ago.getTime(), date));
-  const year = randomDate.getFullYear();
-  const month = formatToTwoDigits(randomDate.getMonth() + 1);
-  const day = formatToTwoDigits(randomDate.getDay());
-  const hours = formatToTwoDigits(randomDate.getHours());
-  const minutes = formatToTwoDigits(randomDate.getMinutes());
-  const seconds = formatToTwoDigits(randomDate.getSeconds());
+  const now = Date.now();
+  const randomTimeInMSeconds = new Date(getRandomInt(ago.getTime(), now));
 
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  return new Date(randomTimeInMSeconds).toJSON();
 };
 
 /**
@@ -72,7 +58,7 @@ const generateComments = (sentences) => {
  * @param {string[]} sentences
  * @param {string[]} categories
  * @param {string[]} comments
- * @return {Post[]}
+ * @return {Article[]}
  */
 const generatePosts = (count = DEFAULT_COUNT, titles, sentences, categories, comments) => {
   return Array(count).fill(null).map(() => {
@@ -85,8 +71,8 @@ const generatePosts = (count = DEFAULT_COUNT, titles, sentences, categories, com
       title: titles[getRandomInt(0, titles.length - 1)],
       announce: shuffleArray(sentences).slice(0, announceSentenceCount).join(` `),
       fullText: shuffleArray(sentences).slice(0, fullTextSentenceCount).join(` `),
-      category: shuffleArray(categories).slice(0, categoriesCount),
-      createdDate: getPostDate(Date.now()),
+      categories: shuffleArray(categories).slice(0, categoriesCount),
+      createdDate: getPostDate(),
       comments: generateComments(comments),
     };
   });
@@ -156,12 +142,12 @@ module.exports = {
  */
 
 /**
- * @typedef {Object} Post
+ * @typedef {Object} Article
  * @property {string} id
  * @property {string} title
  * @property {string} announce
  * @property {string} fullText
- * @property {string[]} category
+ * @property {string[]} categories
  * @property {string} createdDate
  * @property {Comment[]} comments
  */
@@ -171,6 +157,6 @@ module.exports = {
  * @property {string} title
  * @property {string} announce
  * @property {string} fullText
- * @property {string[]} category
+ * @property {string[]} categories
  * @property {string} createdDate
  */

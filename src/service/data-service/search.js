@@ -3,7 +3,7 @@
 class SearchService {
 
   /**
-   * @param {Post[]} articles
+   * @param {Article[]} articles
    */
   constructor(articles) {
     this._articles = articles;
@@ -11,7 +11,7 @@ class SearchService {
 
   /**
    * @param {string} searchText
-   * @return {Post[]}
+   * @return {Article[]}
    */
   find(searchText) {
     return this._articles.filter((article) => article.title.toLowerCase().includes(searchText.toLowerCase()));

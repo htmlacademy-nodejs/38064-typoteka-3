@@ -7,7 +7,7 @@ const {ID_LENGTH} = require(`../../utils/const`);
 class CommentService {
 
   /**
-   * @param {Post} article
+   * @param {Article} article
    * @return {Comment[]}
    */
   getAll(article) {
@@ -15,7 +15,7 @@ class CommentService {
   }
 
   /**
-   * @param {Post} article
+   * @param {Article} article
    * @param {LocalComment} comment
    * @return {Comment}
    */
@@ -26,7 +26,7 @@ class CommentService {
   }
 
   /**
-   * @param {Post} article
+   * @param {Article} article
    * @param {string} commentId
    * @return {Comment|null}
    */
