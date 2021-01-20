@@ -1,6 +1,7 @@
 'use strict';
 
 const axios = require(`axios`);
+const {HttpMethod} = require(`../utils/const`);
 
 
 const TIMEOUT = 1000;
@@ -31,6 +32,17 @@ class API {
    */
   getArticleById(id) {
     return this._load(`/articles/${id}`);
+  }
+
+  /**
+   * @param {LocalArticle} newArticle
+   * @return {Promise<Article>}
+   */
+  createArticle(newArticle) {
+    return this._load(`/articles`, {
+      method: HttpMethod.POST,
+      data: newArticle,
+    });
   }
 
   /**

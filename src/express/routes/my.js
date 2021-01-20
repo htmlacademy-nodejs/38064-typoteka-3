@@ -12,9 +12,9 @@ myRouter.get(`/comments`, async (req, res) => {
     let articles = await api.getArticles();
 
     articles = articles.slice(0, 3);
-    comments = (await Promise.all(
-        articles.map(async (article) => await api.getComments(article.id))
-    )).flat();
+    comments = await Promise.all(
+        articles.map((article) => api.getComments(article.id))
+    ).then((result) => result.flat());
 
   } catch (error) {
     comments = [];

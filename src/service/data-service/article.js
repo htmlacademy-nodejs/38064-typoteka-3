@@ -29,7 +29,7 @@ class ArticleService {
   }
 
   /**
-   * @param {LocalPost} article
+   * @param {LocalArticle} article
    * @return {Article}
    */
   create(article) {
@@ -41,7 +41,7 @@ class ArticleService {
 
   /**
    * @param {string} id
-   * @param {LocalPost} newArticle
+   * @param {LocalArticle} newArticle
    * @return {Article|null}
    */
   update(id, newArticle) {

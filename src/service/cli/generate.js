@@ -153,7 +153,7 @@ module.exports = {
  */
 
 /**
- * @typedef {Object} LocalPost
+ * @typedef {Object} LocalArticle
  * @property {string} title
  * @property {string} announce
  * @property {string} fullText

@@ -64,7 +64,7 @@ describe(`API creates an article if data is valid`, () => {
   let response;
 
   /**
-   * @type {LocalPost} */
+   * @type {LocalArticle} */
   const newArticle = {
     title: `Новый валидный пост`,
     announce: `Создается только для проверки`,
@@ -106,7 +106,7 @@ describe(`API changes existent article`, () => {
   let response;
 
   /**
-   * @type {LocalPost}
+   * @type {LocalArticle}
    */
   const newArticle = {
     title: `Лучшие рок-музыканты 20-века и 21-века`,
@@ -147,7 +147,7 @@ test(`API returns status code 404 when trying to change non-existent article`, (
   const app = createAPI();
 
   /**
-   * @type {LocalPost}
+   * @type {LocalArticle}
    */
   const newArticle = {
     title: `Лучшие рок-музыканты 20-века и 21-века`,
