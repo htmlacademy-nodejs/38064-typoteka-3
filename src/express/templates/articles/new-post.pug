@@ -21,7 +21,7 @@ block content
               div.form__wrapper.form__wrapper--intro
                 div.form__field
                   label
-                    input(type='text' name='title' placeholder='Заголовок' required)
+                    input(type='text' name='title' placeholder='Заголовок')
                 div.form__field.form__field--post-image
                   label
                     input#image-name-field(type='text' placeholder='Фотография' readonly)
@@ -31,6 +31,7 @@ block content
                       | Обзор
                 // TODO реализовать функционал добавления категорий
                 a.new-publication__form-link.button.button--transparent(href='#') Добавить категорию
+
               div.form__wrapper.form__wrapper--text
                 div.form__field.form__field--publication-text
                   label
@@ -38,3 +39,11 @@ block content
                 div.form__field.form__field--publication-text
                   label
                     textarea(rows='10' name='full-text' placeholder='Полный текст публикации')
+
+              if errors && errors.length > 0
+                div.form__wrapper
+                  div.form__validation-error
+                    p.form__error-message Во время публикации произошли ошибки:
+                    ul.form__errors
+                      each error in errors
+                        li.form__error !{error}

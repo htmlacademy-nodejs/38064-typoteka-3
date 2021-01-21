@@ -69,7 +69,7 @@ const generatePosts = (count = DEFAULT_COUNT, titles, sentences, categories, com
     return {
       id: nanoid(ID_LENGTH),
       title: titles[getRandomInt(0, titles.length - 1)],
-      announce: shuffleArray(sentences).slice(0, announceSentenceCount).join(` `),
+      announcement: shuffleArray(sentences).slice(0, announceSentenceCount).join(` `),
       fullText: shuffleArray(sentences).slice(0, fullTextSentenceCount).join(` `),
       categories: shuffleArray(categories).slice(0, categoriesCount),
       createdDate: getPostDate(),
@@ -145,7 +145,8 @@ module.exports = {
  * @typedef {Object} Article
  * @property {string} id
  * @property {string} title
- * @property {string} announce
+ * @property {string} picture
+ * @property {string} announcement
  * @property {string} fullText
  * @property {string[]} categories
  * @property {string} createdDate
@@ -155,7 +156,8 @@ module.exports = {
 /**
  * @typedef {Object} LocalArticle
  * @property {string} title
- * @property {string} announce
+ * @property {string} picture
+ * @property {string} announcement
  * @property {string} fullText
  * @property {string[]} categories
  * @property {string} createdDate
