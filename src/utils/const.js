@@ -27,6 +27,10 @@ const HttpMethod = {
   POST: `POST`,
 };
 
+const UploadImageErrorCode = {
+  WRONG_TYPE: `WRONG_TYPE`,
+};
+
 const Env = {
   DEVELOPMENT: `development`,
   PRODUCTION: `production`,
@@ -41,5 +45,6 @@ module.exports = {
   ExitCode,
   HttpCode,
   HttpMethod,
+  UploadImageErrorCode,
   Env,
 };

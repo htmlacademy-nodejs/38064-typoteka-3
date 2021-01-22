@@ -3,12 +3,12 @@
 const path = require(`path`);
 const multer = require(`multer`);
 const {nanoid} = require(`nanoid`);
+const {UploadImageErrorCode} = require(`../../../utils/const`);
 
 
 const UPLOAD_DIR = `../../upload/img`;
 const UPLOAD_FILE_NAME_LENGTH = 12;
 const IMG_FIELD_NAME = `upload`;
-const INVALID_FILE_TYPE_MESSAGE = `Некорректный тип файла в поле <b>Фотография</b>. Допустимые форматы: <b>jpg</b>, <b>png</b>`;
 
 const storage = multer.diskStorage({
   destination: path.resolve(__dirname, UPLOAD_DIR),
@@ -19,16 +19,15 @@ const storage = multer.diskStorage({
   },
 });
 
-const fileFilter = (request, file, cb) => {
-  if (file.mimetype === `image/png` || file.mimetype === `image/jpg` || file.mimetype === `image/jpeg`) {
-    cb(null, true);
-  } else {
-    request.customError = INVALID_FILE_TYPE_MESSAGE;
-    cb(null, false);
+const fileFilter = (req, file, next) => {
+  if (file.mimetype === `image/jpg` || file.mimetype === `image/jpeg` || file.mimetype === `image/png`) {
+    return next(null, true);
   }
+
+  return next(new Error(UploadImageErrorCode.WRONG_TYPE));
 };
 
-const uploadImageValidator = multer({storage, fileFilter}).single(IMG_FIELD_NAME);
+const uploadImage = multer({storage, fileFilter}).single(IMG_FIELD_NAME);
 
 
-module.exports = uploadImageValidator;
+module.exports = uploadImage;

@@ -35,6 +35,7 @@ const initArticlesController = (controller, articleService, commentService) => {
   });
 
 
+  // TODO сперва проверка на наличие, потом валидация
   articlesController.put(`/:id`, articleValidator, (req, res) => {
     const {id} = req.params;
     const updatedArticle = articleService.update(id, req.body);

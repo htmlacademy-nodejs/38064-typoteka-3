@@ -3,7 +3,7 @@
 const express = require(`express`);
 const api = require(`../api`).getAPI();
 const {HttpCode} = require(`../../utils/const`);
-const uploadImageValidator = require(`../middlewares/article/upload-image-validator`);
+const uploadImage = require(`../middlewares/article/upload-image-validator`);
 
 
 const articlesRouter = new express.Router();
@@ -13,34 +13,38 @@ articlesRouter.get(`/add`, (req, res) => {
 });
 
 
-articlesRouter.post(`/add`, uploadImageValidator, async (req, res) => {
-  const {body, file} = req;
+articlesRouter.post(`/add`,
+    (req, res, next) => {
+      uploadImage(req, res, (error) => {
+        if (error) {
+          res.locals.uploadError = error.message;
+        }
+        next();
+      });
 
-  /** @type {LocalArticle} */
-  const newArticle = {
-    title: body[`title`],
-    picture: file && file.filename,
-    announcement: body[`announcement`],
-    fullText: body[`full-text`],
-    // TODO доработать добавление категорий
-    createdDate: new Date().toISOString(),
-    // TODO доработать добавление изображения
-  };
+    }, async (req, res) => {
+      const {body, file} = req;
 
-  try {
-    await api.createArticle(newArticle);
-    res.redirect(`/my`);
+      /** @type {LocalArticle} */
+      const newArticle = {
+        title: body[`title`],
+        picture: file && file.filename || res.locals.uploadError,
+        announcement: body[`announcement`],
+        fullText: body[`full-text`],
+        // TODO доработать добавление категорий
+        createdDate: new Date().toISOString(), // TODO
+      };
 
-  } catch (error) {
-    if (req.customError) {
-      error.response.data.push(req.customError);
-    }
+      try {
+        await api.createArticle(newArticle);
+        res.redirect(`/my`);
 
-    res
-      .status(HttpCode.BAD_REQUEST)
-      .render(`articles/new-post`, {noValidArticle: newArticle, errors: error.response.data});
-  }
-});
+      } catch (error) {
+        res
+          .status(HttpCode.BAD_REQUEST)
+          .render(`articles/new-post`, {noValidArticle: newArticle, errors: error.response.data});
+      }
+    });
 
 
 articlesRouter.get(`/edit/:id`, async (req, res) => {
