@@ -35,14 +35,9 @@ const initArticlesController = (controller, articleService, commentService) => {
   });
 
 
-  // TODO сперва проверка на наличие, потом валидация
-  articlesController.put(`/:id`, articleValidator, (req, res) => {
+  articlesController.put(`/:id`, [getArticleExistValidator(articleService), articleValidator], (req, res) => {
     const {id} = req.params;
     const updatedArticle = articleService.update(id, req.body);
-
-    if (!updatedArticle) {
-      return res.status(HttpCode.NOT_FOUND).send(`Not found article with id: ${id}`);
-    }
 
     return res.status(HttpCode.OK).json(updatedArticle);
   });
