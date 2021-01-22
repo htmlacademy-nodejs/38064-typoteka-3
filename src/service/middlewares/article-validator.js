@@ -20,11 +20,11 @@ const FULL_TEXT_LIMIT = {
   MAX: 1000,
 };
 
-const ERROR_TEXT = {
-  REQUIRED: `Не указаны обязательные поля:`,
-  TITLE_LIMIT: `<b>Заголовок</b> должен быть не менее ${TITLE_LIMIT.MIN} и не более ${TITLE_LIMIT.MAX} символов.`,
+const ErrorText = {
   ANNOUNCEMENT_LIMIT: `<b>Анонс</b> должен быть не менее ${ANNOUNCEMENT_LIMIT.MIN} и не более ${ANNOUNCEMENT_LIMIT.MAX} символов.`,
   FULL_TEXT_LIMIT: `<b>Полный текст</b> публикации не должен превышать ${FULL_TEXT_LIMIT.MAX} символов`,
+  REQUIRED: `Не указаны обязательные поля:`,
+  TITLE_LIMIT: `<b>Заголовок</b> должен быть не менее ${TITLE_LIMIT.MIN} и не более ${TITLE_LIMIT.MAX} символов.`,
 };
 
 const fieldsToText = {
@@ -34,6 +34,7 @@ const fieldsToText = {
 };
 
 const uploadImageErrorCodeToMessage = {
+  LIMIT_FILE_SIZE: `Размер загружаемого изображения не должен превышать <b>10мб</b>`,
   WRONG_TYPE: `Некорректный тип файла в поле <b>Фотография</b>. Допустимые форматы: <b>jpg</b>, <b>png</b>`,
 };
 
@@ -54,7 +55,7 @@ const checkRequiredFields = (errors, newArticle) => {
   });
 
   if (emptyFields.length !== 0) {
-    const errorText = `${ERROR_TEXT.REQUIRED} ${emptyFields
+    const errorText = `${ErrorText.REQUIRED} ${emptyFields
       .map((field) => (
         `<b>${fieldsToText[field]}</b>`
       ))
@@ -103,9 +104,9 @@ const articleValidator = (req, res, next) => {
   const errors = [];
 
   checkRequiredFields(errors, newArticle);
-  checkLimit(errors, newArticle, `title`, TITLE_LIMIT, ERROR_TEXT.TITLE_LIMIT);
-  checkLimit(errors, newArticle, `announcement`, ANNOUNCEMENT_LIMIT, ERROR_TEXT.ANNOUNCEMENT_LIMIT);
-  checkLimit(errors, newArticle, `fullText`, FULL_TEXT_LIMIT, ERROR_TEXT.FULL_TEXT_LIMIT);
+  checkLimit(errors, newArticle, `title`, TITLE_LIMIT, ErrorText.TITLE_LIMIT);
+  checkLimit(errors, newArticle, `announcement`, ANNOUNCEMENT_LIMIT, ErrorText.ANNOUNCEMENT_LIMIT);
+  checkLimit(errors, newArticle, `fullText`, FULL_TEXT_LIMIT, ErrorText.FULL_TEXT_LIMIT);
 
   if (newArticle.picture) {
     checkUploadedImage(errors, newArticle.picture);

@@ -28,6 +28,7 @@ const HttpMethod = {
 };
 
 const UploadImageErrorCode = {
+  LIMIT_FILE_SIZE: `LIMIT_FILE_SIZE`,
   WRONG_TYPE: `WRONG_TYPE`,
 };
 

@@ -17,7 +17,7 @@ articlesRouter.post(`/add`,
     (req, res, next) => {
       uploadImage(req, res, (error) => {
         if (error) {
-          res.locals.uploadError = error.message;
+          res.locals.uploadError = error.code;
         }
         next();
       });

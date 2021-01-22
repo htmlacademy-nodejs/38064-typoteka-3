@@ -9,6 +9,8 @@ const {UploadImageErrorCode} = require(`../../../utils/const`);
 const UPLOAD_DIR = `../../upload/img`;
 const UPLOAD_FILE_NAME_LENGTH = 12;
 const IMG_FIELD_NAME = `upload`;
+/** Байт в 10 мегабайтах */
+const UPLOAD_MAX_LIMIT = 10485760;
 
 const storage = multer.diskStorage({
   destination: path.resolve(__dirname, UPLOAD_DIR),
@@ -24,10 +26,16 @@ const fileFilter = (req, file, next) => {
     return next(null, true);
   }
 
-  return next(new Error(UploadImageErrorCode.WRONG_TYPE));
+  const error = new Error(UploadImageErrorCode.WRONG_TYPE);
+  error.code = UploadImageErrorCode.WRONG_TYPE;
+  return next(error);
 };
 
-const uploadImage = multer({storage, fileFilter}).single(IMG_FIELD_NAME);
+const limits = {
+  fileSize: UPLOAD_MAX_LIMIT,
+};
+
+const uploadImage = multer({storage, fileFilter, limits}).single(IMG_FIELD_NAME);
 
 
 module.exports = uploadImage;
