@@ -13,7 +13,7 @@ block content
                 div.new-publication__date-form-division
                   div.new-publication__date-block
                     label(for='new-publication-date' aria-label='Календарь')
-                    input#new-publication-date(type='text' name='date' placeholder='2019-03-21')
+                    input#new-publication-date(type='text' name='date' placeholder='2019-03-21' value=noValidArticle && noValidArticle.createdDate)
               button.new-publication__button.button.button--colored(type='submit') Опубликовать
             a.popup__button.button.button--popup-close(aria-label='Закрыть окно') Закрыть окно
 
@@ -22,7 +22,7 @@ block content
 
                 div.form__field
                   label
-                    input(type='text' name='title' placeholder='Заголовок')
+                    input(type='text' name='title' placeholder='Заголовок' value=noValidArticle && noValidArticle.title)
 
                 div.form__field.form__field--post-image
                   label
@@ -45,10 +45,10 @@ block content
               div.form__wrapper.form__wrapper--text
                 div.form__field.form__field--publication-text
                   label
-                    textarea(rows='5' name='announcement' placeholder='Анонс публикации')
+                    textarea(rows='5' name='announcement' placeholder='Анонс публикации') #{noValidArticle && noValidArticle.announcement}
                 div.form__field.form__field--publication-text
                   label
-                    textarea(rows='10' name='full-text' placeholder='Полный текст публикации')
+                    textarea(rows='10' name='full-text' placeholder='Полный текст публикации') #{noValidArticle && noValidArticle.fullText}
 
               if errors && errors.length > 0
                 div.form__wrapper

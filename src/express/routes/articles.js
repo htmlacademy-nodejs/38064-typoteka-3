@@ -53,9 +53,17 @@ articlesRouter.post(`/add`,
         res.redirect(`/my`);
 
       } catch (error) {
+        const categories = [];
+        // TODO доработать работу с категориями после добавления БД
+        // categories = await api.getCategories();
+
+        const noValidArticle = Object.assign({}, newArticle, {
+          createdDate: body.date,
+        });
+
         res
           .status(HttpCode.BAD_REQUEST)
-          .render(`articles/new-post`, {noValidArticle: newArticle, errors: error.response.data});
+          .render(`articles/new-post`, {categories, noValidArticle, errors: error.response.data});
       }
     });
 
