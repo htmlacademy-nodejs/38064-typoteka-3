@@ -35,7 +35,7 @@ articlesRouter.post(`/add`,
     }, async (req, res) => {
       const {body, file} = req;
 
-      const date = body.date === `` ? new Date().toISOString() : new Date(body.date).toISOString();
+      const date = body.date === `` ? new Date() : new Date(body.date);
 
       /** @type {LocalArticle} */
       const newArticle = {
