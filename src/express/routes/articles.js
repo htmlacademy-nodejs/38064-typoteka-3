@@ -37,7 +37,6 @@ articlesRouter.post(`/add`,
 
       const date = body.date === `` ? new Date() : new Date(body.date);
 
-      /** @type {LocalArticle} */
       const newArticle = {
         title: body[`title`],
         picture: file && file.filename || res.locals.uploadError,
@@ -49,6 +48,7 @@ articlesRouter.post(`/add`,
       };
 
       try {
+        // TODO корректно организовать структуры данных отдельно на фронте и на бэке
         await api.createArticle(newArticle);
         res.redirect(`/my`);
 

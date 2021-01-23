@@ -167,7 +167,7 @@ module.exports = {
  * @typedef {Object} LocalArticle
  * @property {string} title
  * @property {string} picture
- * @property {Date} createdDate
+ * @property {string} createdDate
  * @property {Category[]} categories
  * @property {string} announcement
  * @property {string} fullText

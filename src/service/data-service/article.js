@@ -34,9 +34,7 @@ class ArticleService {
    */
   create(localArticle) {
     /** @type {Article} */
-    const newArticle = Object.assign({id: nanoid(ID_LENGTH), comments: []}, localArticle, {
-      createdDate: localArticle.createdDate.toISOString(),
-    });
+    const newArticle = Object.assign({id: nanoid(ID_LENGTH), comments: []}, localArticle);
     this._articles.push(newArticle);
     return newArticle;
   }
