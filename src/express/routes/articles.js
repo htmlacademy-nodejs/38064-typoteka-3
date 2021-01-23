@@ -8,8 +8,18 @@ const uploadImage = require(`../middlewares/article/upload-image-validator`);
 
 const articlesRouter = new express.Router();
 
-articlesRouter.get(`/add`, (req, res) => {
-  res.render(`articles/new-post`);
+articlesRouter.get(`/add`, async (req, res) => {
+  let categories;
+  try {
+    // TODO доработать работу с категориями после добавления БД
+    // categories = await api.getCategories();
+    categories = [];
+
+  } catch (error) {
+    categories = [];
+  }
+
+  res.render(`articles/new-post`, {categories});
 });
 
 
@@ -34,8 +44,8 @@ articlesRouter.post(`/add`,
         announcement: body[`announcement`],
         fullText: body[`full-text`],
         createdDate: date,
-        categories: [],
         // TODO доработать добавление категорий
+        categories: [],
       };
 
       try {

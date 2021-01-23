@@ -46,6 +46,13 @@ class API {
   }
 
   /**
+   * @return {Promise<Category[]>}
+   */
+  getCategories() {
+    return this._load(`/categories`);
+  }
+
+  /**
    * @param {string} articleId
    * @return {Promise<Comment[]>}
    */
