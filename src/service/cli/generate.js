@@ -54,26 +54,35 @@ const generateComments = (sentences) => {
 
 /**
  * @param {number} count
- * @param {string[]} titles
- * @param {string[]} sentences
- * @param {string[]} categories
- * @param {string[]} comments
+ * @param {string[]} titlesData
+ * @param {string[]} sentencesData
+ * @param {string[]} categoriesData
+ * @param {string[]} commentsData
  * @return {Article[]}
  */
-const generatePosts = (count = DEFAULT_COUNT, titles, sentences, categories, comments) => {
+const generatePosts = (count = DEFAULT_COUNT, titlesData, sentencesData, categoriesData, commentsData) => {
+  const categoriesWithId = categoriesData.map((category) => ({
+    id: nanoid(ID_LENGTH),
+    title: category,
+  }));
+
   return Array(count).fill(null).map(() => {
     const announceSentenceCount = getRandomInt(AnnounceRestrict.MIN, AnnounceRestrict.MAX);
-    const fullTextSentenceCount = getRandomInt(1, sentences.length);
-    const categoriesCount = getRandomInt(1, categories.length);
+    const fullTextSentenceCount = getRandomInt(1, sentencesData.length);
+    const categoriesCount = getRandomInt(1, categoriesData.length);
+
+    /** @type {Category[]} */
+    const categories = shuffleArray(categoriesWithId).slice(0, categoriesCount);
 
     return {
+      categories,
       id: nanoid(ID_LENGTH),
-      title: titles[getRandomInt(0, titles.length - 1)],
-      announcement: shuffleArray(sentences).slice(0, announceSentenceCount).join(` `),
-      fullText: shuffleArray(sentences).slice(0, fullTextSentenceCount).join(` `),
-      categories: shuffleArray(categories).slice(0, categoriesCount),
+      title: titlesData[getRandomInt(0, titlesData.length - 1)],
+      picture: ``,
       createdDate: getPostDate(),
-      comments: generateComments(comments),
+      announcement: shuffleArray(sentencesData).slice(0, announceSentenceCount).join(` `),
+      fullText: shuffleArray(sentencesData).slice(0, fullTextSentenceCount).join(` `),
+      comments: generateComments(commentsData),
     };
   });
 };
@@ -84,6 +93,7 @@ const generatePosts = (count = DEFAULT_COUNT, titles, sentences, categories, com
  */
 const readContent = async (filePath) => {
   try {
+    /** @type {string} */
     const content = await fs.readFile(filePath, `utf-8`);
     return content.split(`\n`);
   } catch (err) {
@@ -146,10 +156,10 @@ module.exports = {
  * @property {string} id
  * @property {string} title
  * @property {string} picture
+ * @property {string} createdDate
+ * @property {Category[]} categories
  * @property {string} announcement
  * @property {string} fullText
- * @property {string[]} categories
- * @property {string} createdDate
  * @property {Comment[]} comments
  */
 
@@ -157,8 +167,14 @@ module.exports = {
  * @typedef {Object} LocalArticle
  * @property {string} title
  * @property {string} picture
+ * @property {string} createdDate
+ * @property {Category[]} categories
  * @property {string} announcement
  * @property {string} fullText
- * @property {string[]} categories
- * @property {string} createdDate
+ */
+
+/**
+ * @typedef {Object} Category
+ * @property {string} id
+ * @property {string} title
  */
