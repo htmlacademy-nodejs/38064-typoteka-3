@@ -1,6 +1,7 @@
 'use strict';
 
 const {HttpCode} = require(`../../utils/const`);
+const dayjs = require(`dayjs`);
 
 
 const REQUIRED_FIELDS = [`title`, `categories`, `announcement`];
@@ -21,10 +22,11 @@ const FULL_TEXT_LIMIT = {
 };
 
 const ErrorText = {
+  REQUIRED: `Не указаны обязательные поля:`,
   ANNOUNCEMENT_LIMIT: `<b>Анонс</b> должен быть не менее ${ANNOUNCEMENT_LIMIT.MIN} и не более ${ANNOUNCEMENT_LIMIT.MAX} символов.`,
   FULL_TEXT_LIMIT: `<b>Полный текст</b> публикации не должен превышать ${FULL_TEXT_LIMIT.MAX} символов`,
-  REQUIRED: `Не указаны обязательные поля:`,
   TITLE_LIMIT: `<b>Заголовок</b> должен быть не менее ${TITLE_LIMIT.MIN} и не более ${TITLE_LIMIT.MAX} символов.`,
+  INVALID_DATE: `В поле <b>Дата публикации</b> введен некорректный формат даты. Исправьте или оставьте поле пустым для указания текущей даты и времени`,
 };
 
 const fieldsToText = {
@@ -99,6 +101,20 @@ const checkUploadedImage = (errors, fileData) => {
   return 0;
 };
 
+/**
+ * @param {string[]} errors
+ * @param {Date} date
+ * @return {number}
+ */
+const checkCreatedDate = (errors, date) => {
+  if (!dayjs(date).isValid()) {
+    errors.push(ErrorText.INVALID_DATE);
+    return -1;
+  }
+
+  return 0;
+};
+
 const articleValidator = (req, res, next) => {
   const newArticle = req.body;
   const errors = [];
@@ -111,7 +127,8 @@ const articleValidator = (req, res, next) => {
   if (newArticle.picture) {
     checkUploadedImage(errors, newArticle.picture);
   }
-  // TODO валидация даты
+
+  checkCreatedDate(errors, newArticle.createdDate);
 
   if (errors.length > 0) {
     return res.status(HttpCode.BAD_REQUEST).json(errors);

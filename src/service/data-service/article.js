@@ -29,12 +29,12 @@ class ArticleService {
   }
 
   /**
-   * @param {LocalArticle} article
+   * @param {LocalArticle} localArticle
    * @return {Article}
    */
-  create(article) {
+  create(localArticle) {
     /** @type {Article} */
-    const newArticle = Object.assign({id: nanoid(ID_LENGTH), comments: []}, article);
+    const newArticle = Object.assign({id: nanoid(ID_LENGTH), comments: []}, localArticle);
     this._articles.push(newArticle);
     return newArticle;
   }

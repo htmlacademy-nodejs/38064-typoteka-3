@@ -70,7 +70,7 @@ describe(`API creates an article if data is valid`, () => {
     announcement: `Создается только для проверки.`,
     fullText: `Тестовый пост, который должен быть успешно создан по итогу тестов`,
     categories: [`Тестовая категория`, `IT`, `Деревья`],
-    createdDate: `2020-11-05 04:20:10`,
+    createdDate: `2020-11-05T00:00:00.000Z`,
   };
 
   beforeAll(async () => {

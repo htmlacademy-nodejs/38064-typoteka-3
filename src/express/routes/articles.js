@@ -25,14 +25,17 @@ articlesRouter.post(`/add`,
     }, async (req, res) => {
       const {body, file} = req;
 
+      const date = body.date === `` ? new Date().toISOString() : new Date(body.date).toISOString();
+
       /** @type {LocalArticle} */
       const newArticle = {
         title: body[`title`],
         picture: file && file.filename || res.locals.uploadError,
         announcement: body[`announcement`],
         fullText: body[`full-text`],
+        createdDate: date,
+        categories: [],
         // TODO доработать добавление категорий
-        createdDate: new Date().toISOString(), // TODO
       };
 
       try {
