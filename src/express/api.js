@@ -46,6 +46,16 @@ class API {
   }
 
   /**
+   * @param {string} query
+   * @return {Promise<Article[]>}
+   */
+  searchForArticles(query) {
+    return this._load(`/search`, {
+      params: {query}
+    });
+  }
+
+  /**
    * @return {Promise<Category[]>}
    */
   getCategories() {

@@ -3,10 +3,15 @@ extends layouts/layout
 block content
   main
     section.search-page
-      div.search-page__wrapper
+      div.search-page__wrapper(class=(articles.length === 0 ? 'search-page__wrapper--empty' : ''))
         h1 Поиск
         div.search.search-page__form
-          form(action='#' method='get')
+          form(action='/search' method='get' autocomplete='off')
             label
-              input(type='text' placeholder='Что ищем?')
+              input(type='text' name='query' placeholder='Что ищем?' value=`${searchQuery || ``}`)
             button.search__button.button.button--transparent(type='submit') Найти
+
+          each article in articles
+            div.search__result
+              time.search__date(datetime=article.createdDate) #{article.createdDateHumanized}
+              a.search__link !{article.titleHumanized}
