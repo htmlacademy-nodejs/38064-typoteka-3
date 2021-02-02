@@ -75,25 +75,20 @@ block content
             ul.preview__breadcrumbs
               each category in article.categories
                 li.preview__breadcrumbs-item
-                  // TODO добавить адрес для ссылок
-                  a.preview__breadcrumbs-link(href='#') #{category}
+                  a.preview__breadcrumbs-link(href=`/articles/category/${category.id}`) #{category.title}
+
             div.preview__background
               // TODO добавить вывод превью
               img.preview__background-image(src='/img/skyscraper@1x.jpg' width='460' height='240' srcset='/img/skyscraper@1x.jpg, /img/skyscraper@2x.jpg 2x' alt='Фотография небоскреба')
-            // TODO узнать про способ изменения выводимых данных (аналог pipe в angular)
-            time.preview__time(datetime=article.createdDate)
-              -
-                const date = new Date(article.createdDate)
-                const day = date.getDate()
-                const month = date.getMonth() + 1
-                const year = date.getFullYear()
-                const hours = date.getHours()
-                const minutes = date.getUTCMinutes().toString().padStart(2, `0`)
-              | #{day}.#{month}.#{year}, #{hours}:#{minutes}
+
+            time.preview__time(datetime=article.createdDate) #{article.createdDateHumanized}
             h3.preview__name
-              // TODO добавить адрес для ссылок
-              a.preview__name-link(href='#') #{article.title}
+              a.preview__name-link(href=`/articles/${article.id}`) #{article.title}
             p.preview__text #{article.announcement}
+            // TODO выяснить куда должна вести ссылка и добавить
             a.preview__comment(href='#') Комментарии 
               span.preview__cloud
               b.preview__comment-count  #{article.comments.length}
+
+  script.
+    console.log(!{JSON.stringify(articles)});

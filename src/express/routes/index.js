@@ -1,10 +1,10 @@
 'use strict';
 
 const express = require(`express`);
-const dayjs = require(`dayjs`);
 const he = require(`he`);
 const api = require(`../api`).getAPI();
-const highlightInBold = require(`../../utils/highlight-in-bold`);
+const {humanizeDate} = require(`../lib/humanize-date`);
+const {highlightInBold} = require(`../lib/highlight-in-bold`);
 
 
 const mainRouter = new express.Router();
@@ -26,7 +26,7 @@ mainRouter.get(`/search`, async (req, res) => {
   }
 
   articles.forEach((article) => {
-    article.createdDateHumanized = dayjs(article.createdDate).format(`DD.MM.YYYY, HH:mm`);
+    article.createdDateHumanized = humanizeDate(article.createdDate);
     article.titleHumanized = highlightInBold(he.escape(article.title), searchQuery);
   });
 
@@ -41,6 +41,10 @@ mainRouter.get(`/`, async (req, res) => {
   } catch (error) {
     articles = [];
   }
+
+  articles.forEach((article) => {
+    article.createdDateHumanized = humanizeDate(article.createdDate);
+  });
 
   res.render(`main`, {articles});
 });

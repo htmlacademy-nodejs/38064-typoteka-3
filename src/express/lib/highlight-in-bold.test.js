@@ -1,6 +1,6 @@
 'use strict';
 
-const highlightInBold = require(`./highlight-in-bold`);
+const {highlightInBold} = require(`./highlight-in-bold`);
 
 
 describe(`The function works correctly`, () => {

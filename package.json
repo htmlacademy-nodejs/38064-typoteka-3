@@ -4,9 +4,9 @@
   "description": "Типотека",
   "main": "./src/service/service.js",
   "scripts": {
-    "test": "npm run eslint && npm run test::rest && npm run test::utils",
+    "test": "npm run eslint && npm run test::rest && npm run test::lib",
     "test::rest": "jest src/service/api",
-    "test::utils": "jest src/utils",
+    "test::lib": "jest src/express/lib",
     "eslint": "eslint --ext .js src/",
     "start": "cross-env LOG_LEVEL=error node ./src/service/service.js",
     "start::debug": "cross-env LOG_LEVEL=debug NODE_ENV=development nodemon ./src/service/service.js",

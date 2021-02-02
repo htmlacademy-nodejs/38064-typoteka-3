@@ -1,6 +1,6 @@
 'use strict';
 
-const escapeRegExp = require(`./escape-reg-exp`);
+const escapeRegExp = require(`../../utils/escape-reg-exp`);
 
 
 /**
@@ -15,4 +15,6 @@ const highlightInBold = (text, query) => {
 };
 
 
-module.exports = highlightInBold;
+module.exports = {
+  highlightInBold,
+};

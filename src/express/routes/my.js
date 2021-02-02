@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require(`express`);
+const {humanizeDate} = require(`../lib/humanize-date`);
 const api = require(`../api`).getAPI();
 
 
@@ -31,6 +32,10 @@ myRouter.get(`/`, async (req, res) => {
   } catch (error) {
     articles = [];
   }
+
+  articles.forEach((article) => {
+    article.createdDateHumanized = humanizeDate(article.createdDate);
+  });
 
   res.render(`my/my`, {articles});
 });

@@ -5,16 +5,16 @@ block content
     section
       div.popup.popup--new-publication.popup--anti
         div.new-publication
-          form(action='/articles/add' method='POST' enctype='multipart/form-data' autocomplete='off')
+          form(action=`${isEdit ? `/articles/edit/${article.id}` : '/articles/add'}` method='POST' enctype='multipart/form-data' autocomplete='off')
             div.new-publication__header
-              h1 Новая публикация
+              h1= `${isEdit ? 'Редактирование публикации' : 'Новая публикация'}`
               div.new-publication__date-form
                 h3 Дата публикации
                 div.new-publication__date-form-division
                   div.new-publication__date-block
                     label(for='new-publication-date' aria-label='Календарь')
-                    input#new-publication-date(type='text' name='date' placeholder='2019-03-21' value=noValidArticle && noValidArticle.createdDate)
-              button.new-publication__button.button.button--colored(type='submit') Опубликовать
+                    input#new-publication-date(type='text' name='date' placeholder='2019-03-21' value=article && article.createdDate)
+              button.new-publication__button.button.button--colored(type='submit')= `${isEdit ? 'Сохранить' : 'Опубликовать'}`
             a.popup__button.button.button--popup-close(aria-label='Закрыть окно') Закрыть окно
 
             div.new-publication__form.form
@@ -22,7 +22,7 @@ block content
 
                 div.form__field
                   label
-                    input(type='text' name='title' placeholder='Заголовок' value=noValidArticle && noValidArticle.title)
+                    input(type='text' name='title' placeholder='Заголовок' value=article && article.title)
 
                 div.form__field.form__field--post-image
                   label
@@ -38,17 +38,17 @@ block content
                       // TODO доработать категории после добавления БД
                       input(type=`checkbox` name=`category[${category.id}]` id=`category-${category.id}`)
                       label(for=`category-${category.id}`) #{category.title}
-                  // TODO добавить ссылку на страницу с категориями
-                  a.new-publication__form-link.button.button--transparent(href='#') Добавить категорию
+
+                  a.new-publication__form-link.button.button--transparent(href='/categories') Добавить категорию
 
 
               div.form__wrapper.form__wrapper--text
                 div.form__field.form__field--publication-text
                   label
-                    textarea(rows='5' name='announcement' placeholder='Анонс публикации') #{noValidArticle && noValidArticle.announcement}
+                    textarea(rows='5' name='announcement' placeholder='Анонс публикации') #{article && article.announcement}
                 div.form__field.form__field--publication-text
                   label
-                    textarea(rows='10' name='full-text' placeholder='Полный текст публикации') #{noValidArticle && noValidArticle.fullText}
+                    textarea(rows='10' name='full-text' placeholder='Полный текст публикации') #{article && article.fullText}
 
               if errors && errors.length > 0
                 div.form__wrapper

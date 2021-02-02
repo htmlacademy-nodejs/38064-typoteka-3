@@ -9,9 +9,14 @@ block content
           // TODO явно структура данных комментария не соответствует макету. Разобраться и доработать
           li.publication__list-item
             div.publication__header
+              // TODO добавить аватар автора
               img.publication__list-image(src='/img/avatar-small-2.png' width='20' height='20' alt='Аватар пользователя')
+              // TODO добавить имя автора комментария
               b.publication__list-name Александр Петров
+              // TODO добавить дату для комментариев
               time.publication__item-time(datetime='2019-03-21T20:33') 21.03.2019, 20:33
+
+            // TODO добавить вывод названия статьи
             a.publication__item-text(href='#') Главреды «Дождя», Forbes и других СМИ попросили Роскомнадзор разъяснить штрафы за ссылки на сайты.
             p.publication__text-strong #{comment.text}
             button.publication__button.button.button--close-item(type='button')
