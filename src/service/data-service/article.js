@@ -7,14 +7,14 @@ const {ID_LENGTH} = require(`../../utils/const`);
 class ArticleService {
 
   /**
-   * @param {Post[]} articles
+   * @param {Article[]} articles
    */
   constructor(articles) {
     this._articles = articles;
   }
 
   /**
-   * @return {Post[]}
+   * @return {Article[]}
    */
   get articles() {
     return this._articles;
@@ -22,27 +22,27 @@ class ArticleService {
 
   /**
    * @param {string} id
-   * @return {Post}
+   * @return {Article}
    */
   getById(id) {
     return this._articles.find((article) => article.id === id);
   }
 
   /**
-   * @param {LocalPost} article
-   * @return {Post}
+   * @param {LocalArticle} localArticle
+   * @return {Article}
    */
-  create(article) {
-    /** @type {Post} */
-    const newArticle = Object.assign({id: nanoid(ID_LENGTH), comments: []}, article);
+  create(localArticle) {
+    /** @type {Article} */
+    const newArticle = Object.assign({id: nanoid(ID_LENGTH), comments: []}, localArticle);
     this._articles.push(newArticle);
     return newArticle;
   }
 
   /**
    * @param {string} id
-   * @param {LocalPost} newArticle
-   * @return {Post|null}
+   * @param {LocalArticle} newArticle
+   * @return {Article|null}
    */
   update(id, newArticle) {
     const oldArticle = this._articles.find((article) => article.id === id);
@@ -54,7 +54,7 @@ class ArticleService {
 
   /**
    * @param {string} id
-   * @return {Post|null}
+   * @return {Article|null}
    */
   delete(id) {
     const articleToDelete = this._articles.find((article) => article.id === id);

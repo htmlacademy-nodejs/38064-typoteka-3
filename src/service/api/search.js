@@ -15,6 +15,7 @@ const initSearchController = (controller, searchService) => {
 
   searchController.get(`/`, (req, res) => {
     const {query = ``} = req.query;
+
     if (!query) {
       return res.status(HttpCode.BAD_REQUEST).json([]);
     }

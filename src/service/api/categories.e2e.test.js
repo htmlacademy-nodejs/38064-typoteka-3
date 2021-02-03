@@ -5,7 +5,7 @@ const request = require(`supertest`);
 const initCategoriesController = require(`./categories`);
 const {HttpCode} = require(`../../utils/const`);
 const {CategoryService} = require(`../data-service`);
-const mockData = require(`./search.e2e.test.mock.json`);
+const mockData = require(`./categories.e2e.test.mock.json`);
 
 
 const app = express();

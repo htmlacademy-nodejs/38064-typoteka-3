@@ -22,6 +22,16 @@ const HttpCode = {
   INTERNAL_SERVER_ERROR: 500,
 };
 
+const HttpMethod = {
+  GET: `GET`,
+  POST: `POST`,
+};
+
+const UploadImageErrorCode = {
+  LIMIT_FILE_SIZE: `LIMIT_FILE_SIZE`,
+  WRONG_TYPE: `WRONG_TYPE`,
+};
+
 const Env = {
   DEVELOPMENT: `development`,
   PRODUCTION: `production`,
@@ -35,5 +45,7 @@ module.exports = {
   API_PREFIX,
   ExitCode,
   HttpCode,
+  HttpMethod,
+  UploadImageErrorCode,
   Env,
 };

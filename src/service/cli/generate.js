@@ -29,29 +29,15 @@ const AnnounceRestrict = {
 };
 
 /**
- * @param {number} number
- * @return {string}
+ * @return {string} в формате ISO
  */
-const formatToTwoDigits = (number) => {
-  return `${number < 10 ? `0` : ``}${number}`;
-};
-
-/**
- * @param {number} date
- * @return {string}
- */
-const getPostDate = (date) => {
-  const ago = new Date(date);
+const getPostDate = () => {
+  const ago = new Date();
   ago.setMonth(ago.getMonth() - POST_MONTH_RANGE);
-  const randomDate = new Date(getRandomInt(ago.getTime(), date));
-  const year = randomDate.getFullYear();
-  const month = formatToTwoDigits(randomDate.getMonth() + 1);
-  const day = formatToTwoDigits(randomDate.getDay());
-  const hours = formatToTwoDigits(randomDate.getHours());
-  const minutes = formatToTwoDigits(randomDate.getMinutes());
-  const seconds = formatToTwoDigits(randomDate.getSeconds());
+  const now = Date.now();
+  const randomTimeInMSeconds = new Date(getRandomInt(ago.getTime(), now));
 
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  return new Date(randomTimeInMSeconds).toJSON();
 };
 
 /**
@@ -68,26 +54,35 @@ const generateComments = (sentences) => {
 
 /**
  * @param {number} count
- * @param {string[]} titles
- * @param {string[]} sentences
- * @param {string[]} categories
- * @param {string[]} comments
- * @return {Post[]}
+ * @param {string[]} titlesData
+ * @param {string[]} sentencesData
+ * @param {string[]} categoriesData
+ * @param {string[]} commentsData
+ * @return {Article[]}
  */
-const generatePosts = (count = DEFAULT_COUNT, titles, sentences, categories, comments) => {
+const generatePosts = (count = DEFAULT_COUNT, titlesData, sentencesData, categoriesData, commentsData) => {
+  const categoriesWithId = categoriesData.map((category) => ({
+    id: nanoid(ID_LENGTH),
+    title: category,
+  }));
+
   return Array(count).fill(null).map(() => {
     const announceSentenceCount = getRandomInt(AnnounceRestrict.MIN, AnnounceRestrict.MAX);
-    const fullTextSentenceCount = getRandomInt(1, sentences.length);
-    const categoriesCount = getRandomInt(1, categories.length);
+    const fullTextSentenceCount = getRandomInt(1, sentencesData.length);
+    const categoriesCount = getRandomInt(1, categoriesData.length);
+
+    /** @type {Category[]} */
+    const categories = shuffleArray(categoriesWithId).slice(0, categoriesCount);
 
     return {
+      categories,
       id: nanoid(ID_LENGTH),
-      title: titles[getRandomInt(0, titles.length - 1)],
-      announce: shuffleArray(sentences).slice(0, announceSentenceCount).join(` `),
-      fullText: shuffleArray(sentences).slice(0, fullTextSentenceCount).join(` `),
-      category: shuffleArray(categories).slice(0, categoriesCount),
-      createdDate: getPostDate(Date.now()),
-      comments: generateComments(comments),
+      title: titlesData[getRandomInt(0, titlesData.length - 1)],
+      picture: ``,
+      createdDate: getPostDate(),
+      announcement: shuffleArray(sentencesData).slice(0, announceSentenceCount).join(` `),
+      fullText: shuffleArray(sentencesData).slice(0, fullTextSentenceCount).join(` `),
+      comments: generateComments(commentsData),
     };
   });
 };
@@ -98,6 +93,7 @@ const generatePosts = (count = DEFAULT_COUNT, titles, sentences, categories, com
  */
 const readContent = async (filePath) => {
   try {
+    /** @type {string} */
     const content = await fs.readFile(filePath, `utf-8`);
     return content.split(`\n`);
   } catch (err) {
@@ -156,21 +152,29 @@ module.exports = {
  */
 
 /**
- * @typedef {Object} Post
+ * @typedef {Object} Article
  * @property {string} id
  * @property {string} title
- * @property {string} announce
- * @property {string} fullText
- * @property {string[]} category
+ * @property {string} picture
  * @property {string} createdDate
+ * @property {Category[]} categories
+ * @property {string} announcement
+ * @property {string} fullText
  * @property {Comment[]} comments
  */
 
 /**
- * @typedef {Object} LocalPost
+ * @typedef {Object} LocalArticle
  * @property {string} title
- * @property {string} announce
- * @property {string} fullText
- * @property {string[]} category
+ * @property {string} picture
  * @property {string} createdDate
+ * @property {Category[]} categories
+ * @property {string} announcement
+ * @property {string} fullText
+ */
+
+/**
+ * @typedef {Object} Category
+ * @property {string} id
+ * @property {string} title
  */

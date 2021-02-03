@@ -2,40 +2,58 @@ extends ../layouts/layout
 
 block content
   main
-    section.modal.modal--flex
-      div.popup.popup--new-publication.popup--flex
+    section
+      div.popup.popup--new-publication.popup--anti
         div.new-publication
-          form(action='#' method='POST')
+          form(action=`${isEdit ? `/articles/edit/${article.id}` : '/articles/add'}` method='POST' enctype='multipart/form-data' autocomplete='off')
             div.new-publication__header
-              h1 Новая публикация
+              h1= `${isEdit ? 'Редактирование публикации' : 'Новая публикация'}`
               div.new-publication__date-form
                 h3 Дата публикации
                 div.new-publication__date-form-division
                   div.new-publication__date-block
                     label(for='new-publication-date' aria-label='Календарь')
-                    input#new-publication-date(type='text' name='login' placeholder='21.03.2019')
-              button.new-publication__button.button.button--colored(type='submit') Опубликовать
-            button.popup__button.button.button--popup-close(type='button' aria-label='Закрыть окно') Закрыть окно
+                    input#new-publication-date(type='text' name='date' placeholder='2019-03-21' value=article && article.createdDate)
+              button.new-publication__button.button.button--colored(type='submit')= `${isEdit ? 'Сохранить' : 'Опубликовать'}`
+            a.popup__button.button.button--popup-close(aria-label='Закрыть окно') Закрыть окно
 
             div.new-publication__form.form
               div.form__wrapper.form__wrapper--intro
+
                 div.form__field
                   label
-                    input(type='text' placeholder='Заголовок' required)
+                    input(type='text' name='title' placeholder='Заголовок' value=article && article.title)
+
                 div.form__field.form__field--post-image
                   label
                     input#image-name-field(type='text' placeholder='Фотография' readonly)
                   div.form__image-loader.form__image-loader--publication
                     label
-                      input.visually-hidden(type='file')
+                      input.visually-hidden(type='file' name='upload')
                       | Обзор
-                a.new-publication__form-link.button.button--transparent(href='#') Добавить категорию
+
+                div.new-publication__category-wrapper
+                  each category in categories
+                    div.new-publication__checkbox.new-publication__checkbox--auto
+                      // TODO доработать категории после добавления БД
+                      input(type=`checkbox` name=`category[${category.id}]` id=`category-${category.id}`)
+                      label(for=`category-${category.id}`) #{category.title}
+
+                  a.new-publication__form-link.button.button--transparent(href='/categories') Добавить категорию
+
+
               div.form__wrapper.form__wrapper--text
                 div.form__field.form__field--publication-text
                   label
-                    textarea(rows='1' placeholder='Анонс публикации')
+                    textarea(rows='5' name='announcement' placeholder='Анонс публикации') #{article && article.announcement}
                 div.form__field.form__field--publication-text
                   label
-                    textarea(rows='1' placeholder='Полный текст публикации')
+                    textarea(rows='10' name='full-text' placeholder='Полный текст публикации') #{article && article.fullText}
 
-      div.modal__overlay
+              if errors && errors.length > 0
+                div.form__wrapper
+                  div.form__validation-error
+                    p.form__error-message Во время публикации произошли ошибки:
+                    ul.form__errors
+                      each error in errors
+                        li.form__error !{error}

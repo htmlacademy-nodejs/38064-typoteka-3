@@ -12,8 +12,9 @@ const getRandomInt = (min, max) => {
 };
 
 /**
- * @param {any[]} array
- * @return {any[]}
+ * @template T
+ * @param {T[]} array
+ * @return {T[]}
  */
 const shuffleArray = (array) => {
   const newArray = array.slice();

@@ -3,7 +3,7 @@
 class CategoryService {
 
   /**
-   * @param {Post[]} articles
+   * @param {Article[]} articles
    */
   constructor(articles) {
     this._articles = articles;
@@ -14,7 +14,7 @@ class CategoryService {
    */
   get categories() {
     const categories = this._articles.reduce((acc, article) => {
-      article.category.forEach((category) => acc.add(category));
+      article.categories.forEach((category) => acc.add(category));
       return acc;
     }, new Set());
     return [...categories];
