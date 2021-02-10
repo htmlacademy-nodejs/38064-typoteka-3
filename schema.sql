@@ -1,0 +1,75 @@
+CREATE DATABASE typoteka
+    WITH
+    OWNER = typoteka
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'C'
+    LC_CTYPE = 'C'
+    CONNECTION LIMIT = -1;
+
+
+GRANT ALL ON DATABASE typoteka TO typoteka;
+
+
+CREATE SCHEMA main;
+
+
+CREATE TABLE main.categories
+(
+    id    integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    title varchar(30) NOT NULL
+        CONSTRAINT category_min_length CHECK ( length(title) >= 5 )
+        CONSTRAINT category_max_length CHECK ( length(title) <= 30)
+);
+
+
+CREATE TABLE main.users
+(
+    id            integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    email         varchar(255) UNIQUE NOT NULL,
+    avatar        varchar(50),
+    first_name    varchar(255)        NOT NULL,
+    last_name     varchar(255)        NOT NULL,
+    password_hash varchar(255)
+);
+
+
+CREATE TABLE main.articles
+(
+    id               integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    title            varchar(250) NOT NULL
+        CONSTRAINT article_title_min_length CHECK ( length(title) >= 30 )
+        CONSTRAINT article_title_max_length CHECK ( length(title) <= 250 ),
+    image            varchar(50),
+    publication_date timestamp DEFAULT current_timestamp,
+    announcement     varchar(250) NOT NULL
+        CONSTRAINT article_announcement_min_length CHECK ( length(title) >= 30 )
+        CONSTRAINT article_announcement_max_length CHECK ( length(title) <= 250 ),
+    text             text
+        CONSTRAINT article_text_max_length CHECK ( length(title) <= 1000 )
+);
+
+
+CREATE TABLE main.comments
+(
+    id          integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    create_date timestamp DEFAULT current_timestamp,
+    text        text    NOT NULL
+        CONSTRAINT comment_min_length CHECK (length(text) >= 20),
+    article_id  integer NOT NULL,
+    user_id     integer NOT NULL,
+    FOREIGN KEY (article_id) REFERENCES articles (id),
+    FOREIGN KEY (user_id) REFERENCES users (id)
+);
+
+
+CREATE TABLE main.articles_categories
+(
+    article_id  integer NOT NULL,
+    category_id integer NOT NULL,
+    PRIMARY KEY (article_id, category_id),
+    FOREIGN KEY (article_id) REFERENCES articles (id),
+    FOREIGN KEY (category_id) REFERENCES categories (id)
+);
+
+
+CREATE INDEX ON articles (title);
