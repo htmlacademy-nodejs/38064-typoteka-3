@@ -8,10 +8,10 @@
     "test::rest": "jest src/service/api",
     "test::lib": "jest src/express/lib",
     "eslint": "eslint --ext .js src/",
-    "start": "cross-env LOG_LEVEL=error node ./src/service/service.js",
-    "start::debug": "cross-env LOG_LEVEL=debug NODE_ENV=development nodemon ./src/service/service.js",
-    "server": "nodemon ./src/service/service.js --server",
-    "start-front-server": "nodemon ./src/express/index.js"
+    "start": "cross-env LOG_LEVEL=error node -r dotenv/config ./src/service/service.js",
+    "start-front-server": "node ./src/express/index.js",
+    "server": "cross-env LOG_LEVEL=debug NODE_ENV=development nodemon -r dotenv/config ./src/service/service.js --server",
+    "server-front": "nodemon ./src/express/index.js"
   },
   "repository": {
     "type": "git",
@@ -37,11 +37,14 @@
     "axios": "0.21.1",
     "chalk": "4.1.0",
     "dayjs": "1.10.4",
+    "dotenv": "8.2.0",
     "express": "4.17.1",
     "he": "1.2.0",
     "multer": "1.4.2",
     "nanoid": "3.1.20",
+    "pg": "8.5.1",
     "pino": "6.11.1",
-    "pug": "2.0.4"
+    "pug": "2.0.4",
+    "sequelize": "6.5.0"
   }
 }
