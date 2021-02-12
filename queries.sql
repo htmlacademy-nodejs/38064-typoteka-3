@@ -57,7 +57,7 @@ FROM comments
 WHERE article_id = 1
 ORDER BY comments.create_date DESC;
 
--- Обновить заголовок публикации
+-- Обновление заголовка публикации
 UPDATE articles
 SET title = 'Как я встретил Новый год. Оказывается заголовок из задания не удовлетворяет требованиям ТЗ :)'
 WHERE id = 3;
