@@ -27,10 +27,10 @@ CREATE TABLE articles
     image            varchar(50),
     publication_date timestamp DEFAULT current_timestamp,
     announcement     varchar(250) NOT NULL
-        CONSTRAINT article_announcement_min_length CHECK ( length(title) >= 30 )
-        CONSTRAINT article_announcement_max_length CHECK ( length(title) <= 250 ),
+        CONSTRAINT article_announcement_min_length CHECK ( length(announcement) >= 30 )
+        CONSTRAINT article_announcement_max_length CHECK ( length(announcement) <= 250 ),
     text             text
-        CONSTRAINT article_text_max_length CHECK ( length(title) <= 1000 )
+        CONSTRAINT article_text_max_length CHECK ( length(text) <= 1000 )
 );
 
 
