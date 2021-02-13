@@ -6,7 +6,6 @@ const {Model, DataTypes} = require(`sequelize`);
 class User extends Model {
 }
 
-/* eslint-disable new-cap */
 /**
  * @param {Sequelize} sequelize
  * @return {Model}
@@ -18,7 +17,7 @@ const define = (sequelize) => User.init({
     allowNull: false,
   },
   avatar: {
-    type: DataTypes.STRING(50),
+    type: DataTypes.STRING,
   },
   firstName: {
     type: DataTypes.STRING,
@@ -40,7 +39,6 @@ const define = (sequelize) => User.init({
   modelName: `User`,
   tableName: `users`,
 });
-/* eslint-enable new-cap */
 
 
 module.exports = {
