@@ -11,13 +11,13 @@ const CategoryTitleLimit = {
 class Category extends Model {
 }
 
+/* eslint-disable new-cap */
 /**
  * @param {Sequelize} sequelize
  * @return {Model}
  */
 const define = (sequelize) => Category.init({
   title: {
-    // eslint-disable-next-line new-cap
     type: DataTypes.STRING(30),
     allowNull: false,
     validate: {
@@ -29,6 +29,7 @@ const define = (sequelize) => Category.init({
   modelName: `Category`,
   tableName: `categories`,
 });
+/* eslint-enable new-cap */
 
 
 module.exports = {

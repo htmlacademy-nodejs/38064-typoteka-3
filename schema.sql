@@ -14,7 +14,7 @@ CREATE TABLE users
     avatar        varchar(50),
     first_name    varchar(255)        NOT NULL,
     last_name     varchar(255)        NOT NULL,
-    password_hash varchar(255)
+    password_hash varchar(255)        NOT NULL
 );
 
 
