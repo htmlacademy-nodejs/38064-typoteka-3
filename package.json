@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/nikopol-fw/38064-typoteka-3#readme",
   "devDependencies": {
+    "@types/sequelize": "4.28.9",
     "cross-env": "7.0.3",
     "eslint": "7.19.0",
     "eslint-config-htmlacademy": "0.6.0",
