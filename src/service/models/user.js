@@ -38,6 +38,8 @@ const define = (sequelize) => User.init({
   sequelize,
   modelName: `User`,
   tableName: `users`,
+  timestamps: true,
+  paranoid: true,
 });
 
 
