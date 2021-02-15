@@ -1,6 +1,6 @@
 'use strict';
 
-const {Model, DataTypes, Sequelize} = require(`sequelize`);
+const {Model, DataTypes} = require(`sequelize`);
 
 
 const ArticleTitleLimit = {
@@ -37,11 +37,6 @@ const define = (sequelize) => Article.init({
   image: {
     type: DataTypes.STRING,
   },
-  publicationDate: {
-    type: DataTypes.DATE,
-    defaultValue: Sequelize.NOW,
-    field: `publication_date`,
-  },
   announcement: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -59,6 +54,8 @@ const define = (sequelize) => Article.init({
   sequelize,
   modelName: `Article`,
   tableName: `articles`,
+  timestamps: true,
+  createdAt: `publication_date`,
 });
 
 
