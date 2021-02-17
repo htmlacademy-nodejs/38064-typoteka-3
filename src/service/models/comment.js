@@ -17,14 +17,14 @@ const define = (sequelize) => Comment.init({
     allowNull: false,
     validate: {
       len: [CommentTextLimit.MIN, CommentTextLimit.MAX],
-    }
+    },
   },
 }, {
   sequelize,
   modelName: `Comment`,
   tableName: `comments`,
-  timestamps: true,
   createdAt: `create_date`,
+  updatedAt: `updated_at`,
 });
 
 

@@ -6,10 +6,6 @@ const {Model, DataTypes} = require(`sequelize`);
 class User extends Model {
 }
 
-/**
- * @param {Sequelize} sequelize
- * @return {Model}
- */
 const define = (sequelize) => User.init({
   email: {
     type: DataTypes.STRING,
@@ -38,8 +34,10 @@ const define = (sequelize) => User.init({
   sequelize,
   modelName: `User`,
   tableName: `users`,
-  timestamps: true,
+  createdAt: `created_at`,
+  updatedAt: `updated_at`,
   paranoid: true,
+  deletedAt: `deleted_at`,
 });
 
 

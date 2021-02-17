@@ -21,11 +21,6 @@ const ArticleTextLimit = {
 class Article extends Model {
 }
 
-/**
- *
- * @param {Sequelize} sequelize
- * @return {Model}
- */
 const define = (sequelize) => Article.init({
   title: {
     type: DataTypes.STRING,
@@ -54,8 +49,8 @@ const define = (sequelize) => Article.init({
   sequelize,
   modelName: `Article`,
   tableName: `articles`,
-  timestamps: true,
   createdAt: `publication_date`,
+  updatedAt: `updated_at`,
 });
 
 

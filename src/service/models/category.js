@@ -11,10 +11,6 @@ const CategoryTitleLimit = {
 class Category extends Model {
 }
 
-/**
- * @param {Sequelize} sequelize
- * @return {Model}
- */
 const define = (sequelize) => Category.init({
   title: {
     type: DataTypes.STRING,
@@ -27,6 +23,7 @@ const define = (sequelize) => Category.init({
   sequelize,
   modelName: `Category`,
   tableName: `categories`,
+  timestamps: false,
 });
 
 
