@@ -1,19 +1,4 @@
-CREATE DATABASE typoteka
-    WITH
-    OWNER = typoteka
-    ENCODING = 'UTF8'
-    LC_COLLATE = 'C'
-    LC_CTYPE = 'C'
-    CONNECTION LIMIT = -1;
-
-
-GRANT ALL ON DATABASE typoteka TO typoteka;
-
-
-CREATE SCHEMA main;
-
-
-CREATE TABLE main.categories
+CREATE TABLE categories
 (
     id    integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     title varchar(30) NOT NULL
@@ -22,7 +7,7 @@ CREATE TABLE main.categories
 );
 
 
-CREATE TABLE main.users
+CREATE TABLE users
 (
     id            integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     email         varchar(255) UNIQUE NOT NULL,
@@ -33,7 +18,7 @@ CREATE TABLE main.users
 );
 
 
-CREATE TABLE main.articles
+CREATE TABLE articles
 (
     id               integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     title            varchar(250) NOT NULL
@@ -49,7 +34,7 @@ CREATE TABLE main.articles
 );
 
 
-CREATE TABLE main.comments
+CREATE TABLE comments
 (
     id          integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     create_date timestamp DEFAULT current_timestamp,
@@ -62,7 +47,7 @@ CREATE TABLE main.comments
 );
 
 
-CREATE TABLE main.articles_categories
+CREATE TABLE articles_categories
 (
     article_id  integer NOT NULL,
     category_id integer NOT NULL,
