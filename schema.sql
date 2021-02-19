@@ -27,10 +27,10 @@ CREATE TABLE articles
     image            varchar(50),
     publication_date timestamp DEFAULT current_timestamp,
     announcement     varchar(250) NOT NULL
-        CONSTRAINT article_announcement_min_length CHECK ( length(title) >= 30 )
-        CONSTRAINT article_announcement_max_length CHECK ( length(title) <= 250 ),
+        CONSTRAINT article_announcement_min_length CHECK ( length(announcement) >= 30 )
+        CONSTRAINT article_announcement_max_length CHECK ( length(announcement) <= 250 ),
     text             text
-        CONSTRAINT article_text_max_length CHECK ( length(title) <= 1000 )
+        CONSTRAINT article_text_max_length CHECK ( length(text) <= 1000 )
 );
 
 
@@ -42,8 +42,8 @@ CREATE TABLE comments
         CONSTRAINT comment_min_length CHECK (length(text) >= 20),
     article_id  integer NOT NULL,
     user_id     integer NOT NULL,
-    FOREIGN KEY (article_id) REFERENCES articles (id),
-    FOREIGN KEY (user_id) REFERENCES users (id)
+    FOREIGN KEY (article_id) REFERENCES articles (id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 
@@ -52,8 +52,8 @@ CREATE TABLE articles_categories
     article_id  integer NOT NULL,
     category_id integer NOT NULL,
     PRIMARY KEY (article_id, category_id),
-    FOREIGN KEY (article_id) REFERENCES articles (id),
-    FOREIGN KEY (category_id) REFERENCES categories (id)
+    FOREIGN KEY (article_id) REFERENCES articles (id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE CASCADE
 );
 
 
